@@ -6,21 +6,23 @@
             [ring.adapter.jetty :as jetty]
             [environ.core :refer [env]]
             [camel-snake-kebab.core :as kebab]
-            [clojure.java.jdbc :as db]))
+            [clojure.java.jdbc :as db]
+            [hiccup.core :refer :all]))
 
 (def sample (env :sample "sample-string"))
 
 (defn splash []
   {:status 200
    :headers {"Content-Type" "text/plain"}
-   :body (concat (for [kind ["camel" "snake" "kebab"]]
+   :body (html5 
+          (div (concat (for [kind ["camel" "snake" "kebab"]])
                   (format "<a href=\"/%s?input=%s\">%s %s</a><br />"
-                    kind sample kind sample))
+                    kind sample kind sample)
                 ["<hr /><ul>"]
                 (for [s (db/query (env :database-url)
                           ["select content from sayings"])]
                     (format "<li>%s</li>" (:content s)))
-                ["</ul>"])})
+                ["</ul>"])))})
 
 (defn record [input]
   (db/insert! (env :database-url)

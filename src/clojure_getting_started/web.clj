@@ -23,7 +23,7 @@
 ;                     (format "<li>%s</li>" (:content s)))
 ;                 ["</ul>"]]))
 
-(defn splash [request]
+(defn splash []
   (html5
     [:body
       [:div

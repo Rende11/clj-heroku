@@ -5,9 +5,9 @@
             [clojure.java.io :as io]
             [ring.adapter.jetty :as jetty]
             [environ.core :refer [env]]
-            [camel-snake-kebab.core :as kebab]
+            [camel-snake-kebab.core :as kebab]))
 
-(def sample (env :sampl "sample-string"))
+(def sample (env :sample "sample-string"))
 
 (defn splash []
   {:status 200

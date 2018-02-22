@@ -7,7 +7,8 @@
             [environ.core :refer [env]]
             [camel-snake-kebab.core :as kebab]
             [clojure.java.jdbc :as db]
-            [hiccup.core :refer :all]))
+            [hiccup.core :refer :all]
+            [hiccup.page :refer :all]))
 
 (def sample (env :sample "sample-string"))
 

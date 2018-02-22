@@ -5,12 +5,18 @@
             [clojure.java.io :as io]
             [ring.adapter.jetty :as jetty]
             [environ.core :refer [env]]
-            [camel-snake-kebab.core :as kebab]))
+            [camel-snake-kebab.core :as kebab]
+
+(def sample (env :sampl "sample-string"))
 
 (defn splash []
   {:status 200
    :headers {"Content-Type" "text/plain"}
-   :body "Hello from Heroku"})
+   :body (for [kind ["camel" "snake" "kebab"]]
+          (format "<a href=\"/%s?input=%s\">%s %s</a><br />"
+            kind sample kind sample))})
+
+
 
 (defroutes app
   (GET "/camel" {{input :input} :params}

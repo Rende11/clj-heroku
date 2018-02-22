@@ -32,7 +32,9 @@
       [:div
         [:ul (for [kind ["camel" "snake" "kebab"]]
                 [:li
-                  [:a {:href "/"} kind]])]]]))
+                  [:a {:href (str "/" kind "?input=" sample)} kind]])]]
+      [:div
+        [:a {:href "/"} "Home"]]]))
 
 (defn record [input]
   (db/insert! (env :database-url)

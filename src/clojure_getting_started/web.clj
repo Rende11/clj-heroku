@@ -38,7 +38,8 @@
       [:div
         [:ul 
           (for [result (db/query (env :database-url) ["select content from sayings"])]
-            result)]]
+            [:li
+              (:content result)])]]
       [:div
         [:a {:href "/"} "Home"]]]))
 

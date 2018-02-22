@@ -30,9 +30,15 @@
         [:p
           [:h1 "Header"]]]
       [:div
-        [:ul (for [kind ["camel" "snake" "kebab"]]
-                [:li
-                  [:a {:href (str "/" kind "?input=" sample)} kind]])]]
+        [:ul 
+          (for [kind ["camel" "snake" "kebab"]]
+            [:li
+              [:a {:href (str "/" kind "?input=" sample)} kind]])]]
+      [:hr]
+      [:div
+        [:ul 
+          (for [result (db/query (env :database-url) ["select content from sayings"])]
+            [:li result])]]
       [:div
         [:a {:href "/"} "Home"]]]))
 

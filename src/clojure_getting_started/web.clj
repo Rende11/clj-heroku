@@ -12,18 +12,23 @@
 
 (def sample (env :sample "sample-string"))
 
-(defn splash []
-  {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body (html5 
-          [:div (concat (for [kind ["camel" "snake" "kebab"]])
-                  (format "<a href=\"/%s?input=%s\">%s %s</a><br />"
-                    kind sample kind sample))
-                ["<hr /><ul>"]
-                (for [s (db/query (env :database-url)
-                          ["select content from sayings"])]
-                    (format "<li>%s</li>" (:content s)))
-                ["</ul>"]])}))
+; (defn splash []
+;   (html5 
+;           [:div (concat (for [kind ["camel" "snake" "kebab"]])
+;                   (format "<a href=\"/%s?input=%s\">%s %s</a><br />"
+;                     kind sample kind sample))
+;                 ["<hr /><ul>"]
+;                 (for [s (db/query (env :database-url)
+;                           ["select content from sayings"])]
+;                     (format "<li>%s</li>" (:content s)))
+;                 ["</ul>"]]))
+
+(defn splash [request]
+  (html5
+    [:body
+      [:div
+        [:p
+          [:h1 "Header"]]]]))
 
 (defn record [input]
   (db/insert! (env :database-url)

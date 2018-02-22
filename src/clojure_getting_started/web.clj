@@ -28,7 +28,11 @@
     [:body
       [:div
         [:p
-          [:h1 "Header"]]]]))
+          [:h1 "Header"]]]
+      [:div
+        [:ul (for [kind ["camel" "snake" "kebab"]]
+                [:li
+                  [:a {:href "/"} kind]])]]]))
 
 (defn record [input]
   (db/insert! (env :database-url)

@@ -1,0 +1,2 @@
+Local db connect
+DATABASE_URL=postgresql://localhost/rende11

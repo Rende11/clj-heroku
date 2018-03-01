@@ -4,13 +4,14 @@
             [compojure.route :as route]
             [clojure.java.io :as io]
             [ring.adapter.jetty :as jetty]
+            [ring.middleware.reload :refer [wrap-reload]]
             [environ.core :refer [env]]
             [camel-snake-kebab.core :as kebab]
             [clojure.java.jdbc :as db]
             [hiccup.core :refer :all]
             [hiccup.page :refer :all]))
 
-(def sample (env :sample "sample-string"))
+(def sample (env :sample))
 
 (defn splash []
   (html5
@@ -30,19 +31,30 @@
             [:li
               (:content result)])]]
       [:div
-        [:a {:href "/"} "Home"]]]))
+        [:a {:href "/"} "Homes"]]]))
 
 (defn record [input]
   (db/insert! (env :database-url)
-    :sayings {:conten input}))
-
+    :sayings {:content input}))
 
 
 (defroutes app
+  (GET "/kek/:name" [name]
+    (str name))
+
+  (GET "/add/:input" [input]
+    (record input)
+    (splash))
+
   (GET "/camel" {{input :input} :params}
     {:status 200
      :headers {"Content-Type" "text/plain"}
      :body (kebab/->CamelCase input)})
+  
+  (GET "/test" [request]
+   {:status 200
+    :headers {"Content-Type" "text/plain"}
+    :body "(kebab/->CamelCase input)"})
   
   (GET "/snake" {{input :input} :params}
     {:status 200
@@ -59,9 +71,10 @@
        (route/not-found (slurp (io/resource "404.html")))))
 
 (defn -main [& [port]]
-  (let [port (Integer. (or port (env :port) 5000))]
+  (let [port (Integer. (or port (env :port) 5005))]
     (jetty/run-jetty (site #'app) {:port port :join? false})))
 
-;; For interactive development:
-;; (.stop server)
-;; (def server (-main))
+(defn -main-dev [& [port]]
+  (let [port (Integer. (or port (env :port) 5005))]
+    (jetty/run-jetty (wrap-reload #'app) {:port port :join? false})))    
+

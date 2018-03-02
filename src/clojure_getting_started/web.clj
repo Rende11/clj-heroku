@@ -13,24 +13,31 @@
             [hiccup.page :refer :all]
             [hiccup.form :refer :all]
             [clojure-getting-started.views.index :refer [splash]]
-            [clojure-getting-started.views.record :refer [show-item]]))
+            [clojure-getting-started.views.items :refer [show-item]]))
 
 (def sample (env :sample))
+(def database-url (env :database-url))
 
 (defn record [input]
-  (db/insert! (env :database-url)
+  (db/insert! database-url
     :sayings {:content input}))
 
+(defn get-all-items []
+  (db/query database-url ["select * from sayings"]))
+
+(defn get-item [id]
+  (first (db/query database-url ["select * from sayings where id = ?" (Integer. id)])))
+  
 
 (defroutes app
 
-  (GET "/:id" [id]
-    (show-item id))
+  (GET "/items/:id" [id]
+    (show-item (get-item id)))
     
   (GET "/" []
-       (splash))
+       (splash (get-all-items)))
   
-  (POST "/" [input]
+  (POST "/items" [input]
     (if-not (empty? input)
       (do 
         (record input)

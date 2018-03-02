@@ -6,22 +6,22 @@
             [environ.core :refer [env]]))
 
 
-(defn splash [& errors]
+(defn splash [items & errors]
   (println errors)
   (html5
     [:body
       [:div
         [:h1 "Header"]]
       [:div
-        (form-to ["POST" "/"]
+        (form-to ["POST" "/items"]
           (label :text "Text:")
           (text-field :input)
           [:button {:type "submit"} "Send"])]
       [:hr]
       [:div
         [:ul 
-          (for [result (db/query (env :database-url) ["select id, content from sayings"])]
+          (for [item items]
             [:li
-              [:a {:href (str "/" (:id result))} (:content result)]])]]
+              [:a {:href (str "/items/" (:id item))} (:content item)]])]]
       [:div
         [:a {:href "/"} "Home"]]]))

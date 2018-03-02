@@ -5,11 +5,13 @@
             [clojure.java.io :as io]
             [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
+            [ring.middleware.params :refer [wrap-params]]
             [environ.core :refer [env]]
             [camel-snake-kebab.core :as kebab]
             [clojure.java.jdbc :as db]
             [hiccup.core :refer :all]
-            [hiccup.page :refer :all]))
+            [hiccup.page :refer :all]
+            [hiccup.form :refer :all]))
 
 (def sample (env :sample))
 
@@ -19,6 +21,11 @@
       [:div
         [:p
           [:h1 "Header"]]]
+      [:div
+        (form-to ["POST" "/"]
+          (label :text "Text:")
+          (text-field :input)
+          [:button {:type "submit"} "Send"])]
       [:div
         [:ul 
           (for [kind ["camel" "snake" "kebab"]]
@@ -39,6 +46,7 @@
 
 
 (defroutes app
+
   (GET "/kek/:name" [name]
     (str name))
 
@@ -67,8 +75,12 @@
     
   (GET "/" []
        (splash))
+  
+  (POST "/" [input]
+   (str input))
+  
   (ANY "*" []
-       (route/not-found (slurp (io/resource "404.html")))))
+    (route/not-found (slurp (io/resource "404.html")))))
 
 (defn -main [& [port]]
   (let [port (Integer. (or port (env :port) 5005))]
@@ -76,5 +88,5 @@
 
 (defn -main-dev [& [port]]
   (let [port (Integer. (or port (env :port) 5005))]
-    (jetty/run-jetty (wrap-reload #'app) {:port port :join? false})))    
+    (jetty/run-jetty (wrap-params (wrap-reload #'app)) {:port port :join? false})))    
 

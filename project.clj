@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.4.0"]
                  [ring "1.4.0"]
-                 [environ "1.0.0"]
+                 [environ "1.1.0"]
                  [camel-snake-kebab "0.2.4"]
                  [org.clojure/java.jdbc "0.3.5"]
                  [org.postgresql/postgresql "9.4-1201-jdbc4"]
@@ -16,3 +16,4 @@
   :hooks [environ.leiningen.hooks]
   :uberjar-name "clojure-getting-started-standalone.jar"
   :profiles {:production {:env {:production true}}})
+             

@@ -11,34 +11,11 @@
             [clojure.java.jdbc :as db]
             [hiccup.core :refer :all]
             [hiccup.page :refer :all]
-            [hiccup.form :refer :all]))
+            [hiccup.form :refer :all]
+            [clojure-getting-started.views.index :refer [splash]]
+            [clojure-getting-started.views.record :refer [show-item]]))
 
 (def sample (env :sample))
-
-(defn splash []
-  (html5
-    [:body
-      [:div
-        [:p
-          [:h1 "Header"]]]
-      [:div
-        (form-to ["POST" "/"]
-          (label :text "Text:")
-          (text-field :input)
-          [:button {:type "submit"} "Send"])]
-      [:div
-        [:ul 
-          (for [kind ["camel" "snake" "kebab"]]
-            [:li
-              [:a {:href (str "/" kind "?input=" sample)} kind]])]]
-      [:hr]
-      [:div
-        [:ul 
-          (for [result (db/query (env :database-url) ["select content from sayings"])]
-            [:li
-              (:content result)])]]
-      [:div
-        [:a {:href "/"} "Homes"]]]))
 
 (defn record [input]
   (db/insert! (env :database-url)
@@ -47,37 +24,18 @@
 
 (defroutes app
 
-  (GET "/kek/:name" [name]
-    (str name))
-
-  (GET "/add/:input" [input]
-    (record input)
-    (splash))
-
-  (GET "/camel" {{input :input} :params}
-    {:status 200
-     :headers {"Content-Type" "text/plain"}
-     :body (kebab/->CamelCase input)})
-  
-  (GET "/test" [request]
-   {:status 200
-    :headers {"Content-Type" "text/plain"}
-    :body "(kebab/->CamelCase input)"})
-  
-  (GET "/snake" {{input :input} :params}
-    {:status 200
-     :headers {"Content-Type" "text/plain"}
-     :body (kebab/->snake_case input)})
-  (GET "/kebab" {{input :input} :params}
-    {:status 200
-     :headers {"Content-Type" "text/plain"}
-     :body (kebab/->kebab-case input)})
+  (GET "/:id" [id]
+    (show-item id))
     
   (GET "/" []
        (splash))
   
   (POST "/" [input]
-   (str input))
+    (if-not (empty? input)
+      (do 
+        (record input)
+        (splash "empty string")))
+    (splash))
   
   (ANY "*" []
     (route/not-found (slurp (io/resource "404.html")))))

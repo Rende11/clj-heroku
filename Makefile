@@ -6,3 +6,7 @@ repl:
 
 initdb:
 	psql < dbinit.sql
+
+dropdb:
+	psql < dbdrop.sql
+

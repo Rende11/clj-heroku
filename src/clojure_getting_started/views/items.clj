@@ -15,12 +15,28 @@
         [:div
           [:a {:href "/"} "back"]
           [:br]
-          [:a {:href "/"} "edit"]
+          [:a {:href (str "/items/" (:id item) "/edit")} "edit"]
           [:br]
-          [:a {:href "/"} "remove"]
+          (form-to [:delete (str "/items/" (:id item))]
+            [:button {:type "submit"} "Delete"])
           [:br]]]))
 
-(defn create-item [item & errors]
+(defn show-items [items]
+  (html5
+    [:body
+      [:div
+        [:table
+          [:th "id"]
+          [:th "content"]
+          (for [item items]
+            [:tr
+              [:td (:id item)]
+              [:td (:content item)]])]]
+      [:div
+        [:a {:href "/"} "Home"]]]))
+
+
+(defn create-item [& errors]
   (html5
     [:body
       [:div
@@ -32,19 +48,16 @@
       [:hr]
       [:div
         [:a {:href "/"} "back"]
-        [:br]
-        [:a {:href "/"} "edit"]
-        [:br]
-        [:a {:href "/"} "remove"]
         [:br]]]))
 
-(defn update-item [item]
+(defn update-item [item & errors]
   (html5
     [:body
       [:div
-        (form-to ["PUT" "/items"]
+        (form-to [:put (str "/items/" (:id item))]
           (label :text "Text:")
           (text-field :input (:content item))
+          [:p errors]
           [:button {:type "submit"} "Send"])]
       [:hr]
       [:div

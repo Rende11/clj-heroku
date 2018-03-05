@@ -14,7 +14,7 @@
             [hiccup.page :refer :all]
             [hiccup.form :refer :all]
             [clojure-getting-started.views.index :refer [splash]]
-            [clojure-getting-started.views.items :refer [read-item create-item update-item]]))
+            [clojure-getting-started.views.items :refer [read-item create-item update-item show-items]]))
 
 (def sample (env :sample))
 (def database-url (env :database-url))
@@ -24,40 +24,52 @@
     :sayings {:content input}))
 
 (defn get-all-items []
-  (db/query database-url ["select * from sayings"]))
+  (db/query database-url ["select * from sayings order by id asc"]))
 
 (defn get-item [id]
   (first (db/query database-url ["select * from sayings where id = ?" (Integer. id)])))
   
-(defn update-item [id content]
-  (db/update! database-url :sayings
-    {:content content}
-    ["id = ?" (Integer. id)]))
+(defn update-record [id content]
+  (db/update! database-url :sayings {:content content} ["id = ?" (Integer. id)]))
+
+(defn delete-record [id]
+  (db/delete! database-url :sayings ["id = ?" (Integer. id)]))
+
 
 (defroutes app
-
-
-  (GET "/items/:id" [id]
-    (read-item (get-item id)))
-    
   (GET "/" []
     (splash (get-all-items)))
   
-  (GET "/items" []
+  (GET "/items/new" []
     (create-item))
   
-  (PUT "/items/:id" [id]
+  (GET "/items" []
+    (show-items (get-all-items)))
 
-    (update-item))
-  
   (POST "/items" [input]
     (if-not (empty? input)
       (do 
         (record input)
         (redirect "/"))
-      (splash (get-all-items) "empty input")))
+      (create-item "empty input")))
   
+  (GET "/items/:id" [id]
+    (read-item (get-item id)))
+
+  (GET "/items/:id/edit" [id]
+    (update-item (get-item id)))
   
+  (PUT "/items/:id" [id input]
+    (if-not (empty? input)
+      (do
+        (update-record id input)
+        (read-item (get-item id)))
+      (update-item (get-item id) "Cannot be replaced on empty string")))
+  
+  (DELETE "/items/:id" [id]
+    (delete-record id)
+    (redirect "/"))
+
   (ANY "*" []
     (route/not-found (slurp (io/resource "404.html")))))
 

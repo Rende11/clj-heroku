@@ -7,25 +7,15 @@
 
 
 (defn splash [items & errors]
-  (println items)
-  (println errors)
   (html5
     [:body
-      [:div
-        [:h1 "Header"]]
-      [:div
-        (form-to ["POST" "/items"]
-          (label :text "Text:")
-          (text-field :input)
-          [:p errors]
-          [:button {:type "submit"} "Send"])]
       [:hr]
       [:div
-        [:a {:href "/items"} "Add"]]
+        [:a {:href "/items/new"} "Add"]]
       [:div
         [:ul 
           (for [item items]
             [:li
               [:a {:href (str "/items/" (:id item))} (:content item)]])]]
       [:div
-        [:a {:href "/"} "Home"]]]))
+        [:a {:href "/items"} "All items "]]]))

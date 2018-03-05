@@ -7,6 +7,7 @@
 
 
 (defn splash [items & errors]
+  (println items)
   (println errors)
   (html5
     [:body
@@ -16,8 +17,11 @@
         (form-to ["POST" "/items"]
           (label :text "Text:")
           (text-field :input)
+          [:p errors]
           [:button {:type "submit"} "Send"])]
       [:hr]
+      [:div
+        [:a {:href "/items"} "Add"]]
       [:div
         [:ul 
           (for [item items]

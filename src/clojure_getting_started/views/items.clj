@@ -1,9 +1,7 @@
 (ns clojure-getting-started.views.items
-  (:require [clojure.java.jdbc :as db]
-            [hiccup.core :refer :all]
+  (:require [hiccup.core :refer :all]
             [hiccup.page :refer :all]
-            [hiccup.form :refer :all]
-            [environ.core :refer [env]]))
+            [hiccup.form :refer :all]))
 
 
 (defn read-item [item]

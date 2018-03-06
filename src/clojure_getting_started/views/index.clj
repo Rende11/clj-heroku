@@ -1,9 +1,8 @@
 (ns clojure-getting-started.views.index
-  (:require [clojure.java.jdbc :as db]
-            [hiccup.core :refer :all]
+  (:require [hiccup.core :refer :all]
             [hiccup.page :refer :all]
-            [hiccup.form :refer :all]
-            [environ.core :refer [env]]))
+            [hiccup.form :refer :all]))
+
 
 
 (defn splash [items & errors]

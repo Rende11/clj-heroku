@@ -2,16 +2,11 @@
   (:require [compojure.core :refer [defroutes GET PUT POST DELETE ANY]]
             [clojure-getting-started.db.items :as items-db]
             [clojure-getting-started.views.items :as items-view]
-            [clojure-getting-started.views.index :as index]
-            [ring.util.response :refer [redirect]]
-            [compojure.route :as route]
-            [clojure.java.io :as io]))
+            [ring.util.response :refer [redirect]]))
+           
 
 
 (defroutes routes
-  (GET "/" []
-    (index/splash (items-db/get-all-items)))
-  
   (GET "/items/new" []
     (items-view/create-item))
   
@@ -40,7 +35,6 @@
   
   (DELETE "/items/:id" [id]
     (items-db/delete-record id)
-    (redirect "/"))
+    (redirect "/")))
 
-  (ANY "*" []
-    (route/not-found (slurp (io/resource "404.html")))))
+

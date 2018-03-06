@@ -11,6 +11,7 @@
     (items-view/create-item))
   
   (GET "/items" []
+    (println "QWEQWEWEQ")
     (items-view/show-items (items-db/get-all-items)))
 
   (POST "/items" [input]

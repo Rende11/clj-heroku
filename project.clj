@@ -12,7 +12,8 @@
                  [org.postgresql/postgresql "9.4-1201-jdbc4"]
                  [hiccup "1.0.5"]
                  [jayq "2.5.4"]
-                 [ring/ring-mock "0.3.2"]]
+                 [ring/ring-mock "0.3.2"]
+                 [ring-logger "0.7.7"]]
   :min-lein-version "2.0.0"
   :plugins [[environ/environ.lein "0.3.1"]]
   :hooks [environ.leiningen.hooks]

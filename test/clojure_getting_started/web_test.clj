@@ -22,8 +22,8 @@
 (deftest items-post-test
   (let [body {:input ""}
         { status :status headers :headers} (app-routes (-> 
-                                                          (mock/request :post "/items") 
-                                                          (mock/body "body")))]
+                                                          (mock/request :post "/items" {:input "trest"})))] 
+                                                          
     (is (= 200888 status))))
 
     

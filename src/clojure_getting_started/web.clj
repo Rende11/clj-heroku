@@ -4,6 +4,7 @@
             [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
+            [ring.logger :as logger]
             [environ.core :refer [env]]
             [clojure-getting-started.routes.items :as items]
             [clojure-getting-started.routes.index :as index]))
@@ -12,11 +13,21 @@
     items/routes
     index/routes)
 
+(def app-dev
+  (-> #'app-routes
+    wrap-reload
+    wrap-params
+    logger/wrap-with-logger))
+
+(def app
+  (-> #'app-routes
+    wrap-params))
+
 (defn -main [& [port]]
   (let [port (Integer. (or port (env :port) 5005))]
-    (jetty/run-jetty (wrap-params (site #'app-routes)) {:port port :join? false})))
+    (jetty/run-jetty app {:port port :join? false})))
 
 (defn -main-dev [& [port]]
   (let [port (Integer. (or port (env :port) 5005))]
-    (jetty/run-jetty (wrap-params (wrap-reload #'app-routes)) {:port port :join? false})))    
+    (jetty/run-jetty app-dev {:port port :join? false})))    
 

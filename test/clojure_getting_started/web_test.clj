@@ -20,10 +20,22 @@
     (is (= 200 status))))
 
 (deftest items-post-test
-  (let [body {:input ""}
-        { status :status headers :headers} (app-routes (-> 
-                                                          (mock/request :post "/items" {:input "trest"})))] 
-                                                          
-    (is (= 200888 status))))
+  (let [{ status :status headers :headers } (app-routes (-> (mock/request :post "/items") (mock/body {:input "tost"})))]
+    (is (= 302 status))))
 
-    
+(deftest items-get-id-test
+  (let [{ status :status headers :headers } (app-routes (-> (mock/request :get "/items/1")))]
+    (is (= 200 status))))    
+
+(deftest items-get-edit-test
+  (let [{ status :status headers :headers } (app-routes (-> (mock/request :get "/items/1/edit")))]
+    (is (= 200 status))))
+
+(deftest items-put-item-test
+  (let [{ status :status headers :headers } (app-routes (-> (mock/request :put "/items/1") (mock/body {:input "new item ZZZ"})))]
+    (is (= 200 status))))
+
+(deftest items-delete-items-test
+  (let [{ status :status headers :headers } (app-routes (-> (mock/request :delete "/items/1")))]
+    (is (= 302 status))))
+

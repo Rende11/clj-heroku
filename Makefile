@@ -4,6 +4,9 @@ run:
 repl:
 	lein repl
 
+test:
+	lein test
+
 initdb:
 	psql < dbinit.sql
 

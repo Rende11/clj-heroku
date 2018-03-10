@@ -61,7 +61,8 @@
       [:div
         [:a {:href "/"} "back"]
         [:br]
-        [:a {:href "/"} "edit"]
+        [:a {:href (str "/items/" (:id item) "/edit")} "edit"]
         [:br]
-        [:a {:href "/"} "remove"]
+        (form-to [:delete (str "/items/" (:id item))]
+          [:button {:type "submit"} "Delete"])
         [:br]]]))

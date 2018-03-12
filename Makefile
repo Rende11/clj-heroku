@@ -7,9 +7,15 @@ repl:
 test:
 	lein test
 
-initdb:
+initdb-local:
 	psql < dbinit.sql
 
-dropdb:
+dropdb-local:
 	psql < dbdrop.sql
+
+initdb-heroku:
+	heroku pg:psql < dbinit.sql
+
+dropdb-heroku:
+	heroku pg:psql < dbdrop.sql
 

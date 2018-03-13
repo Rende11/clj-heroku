@@ -9,15 +9,17 @@
 (defroutes routes
   (GET "/items/new" []
     (items-view/create-item))
-  
+
   (GET "/items" []
     (items-view/show-items (items-db/get-all-items)))
 
-  (POST "/items" [input]
-    (println input)
-    (if-not (empty? input)
+  (POST "/items" req
+
+    (clojure.pprint/pprint "SLURPPPP\n")
+    (clojure.pprint/pprint (slurp (:body req)))
+    (if-not (empty? "input")
       (do 
-        (items-db/record input)
+        (items-db/record "input")
         (redirect "/"))
       (items-view/create-item "empty input")))
   

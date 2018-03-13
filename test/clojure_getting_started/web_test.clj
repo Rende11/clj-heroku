@@ -19,8 +19,20 @@
   (let [{ status :status headers :headers } (app-routes (mock/request :get "/items"))]
     (is (= 200 status))))
 
-(deftest items-post-test
+(deftest items-post-test-1
+  (let [{ status :status headers :headers } (app-routes (-> (mock/request :post "/items") (mock/body {"input" "tost"})))]
+    (is (= 302 status))))
+
+(deftest items-post-test-2
+  (let [{ status :status headers :headers } (app-routes (-> (mock/request :post "/items") (mock/body {:form-params {:input "tost"}})))]
+    (is (= 302 status))))
+    
+(deftest items-post-test-3
   (let [{ status :status headers :headers } (app-routes (-> (mock/request :post "/items") (mock/body {:input "tost"})))]
+   (is (= 302 status))))
+        
+(deftest items-post-test-4
+  (let [{ status :status headers :headers } (app-routes (-> (mock/request :post "/items") (mock/body "tost")))]
     (is (= 302 status))))
 
 (deftest items-get-id-test

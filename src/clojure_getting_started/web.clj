@@ -16,8 +16,9 @@
 (def app-dev
   (-> #'app-routes
     wrap-reload
-    wrap-params
-    logger/wrap-with-logger))
+    wrap-params))
+    ;;logger/wrap-with-logger
+    
 
 (def app
   (-> #'app-routes

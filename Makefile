@@ -19,3 +19,5 @@ initdb-heroku:
 dropdb-heroku:
 	heroku pg:psql < dbdrop.sql
 
+
+.PHONY: test

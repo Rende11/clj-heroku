@@ -3,7 +3,8 @@
             [clojure-getting-started.db.items :as items-db]
             [clojure-getting-started.views.index :as index]
             [compojure.route :as route]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [environ.core :refer [env]]))
 
 (defroutes routes
   (GET "/" []

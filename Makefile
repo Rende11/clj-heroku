@@ -7,6 +7,9 @@ repl:
 test:
 	lein test
 
+lint:
+	lein eastwood
+
 initdb-local:
 	psql < dbinit.sql
 

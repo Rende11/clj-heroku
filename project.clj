@@ -19,5 +19,7 @@
   :hooks [environ.leiningen.hooks]
   :uberjar-name "clojure-getting-started-standalone.jar"
   :profiles {:production {:env {:production true}}
-             :dev {:env {:example "ALIVE"}}})
+             :dev {:env {:example "ALIVE"}
+                   :plugins [[jonase/eastwood "0.2.5"]]}})
+             
              
